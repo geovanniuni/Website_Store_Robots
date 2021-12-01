@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/styles.css')}}"  media="screen" />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -28,7 +28,7 @@
     ></script>
     <title>Registro</title>
   </head>
-  <body background="fondo2.jpg" class="content-login">
+  <body background="{{url_for('static', filename='images/fondo2.jpg')}}" class="content-login">
     <div class="container2">
       <h1 class="title">ROBO-Shop</h1>
       <h3 class="subtitle">Registro</h3>
@@ -100,7 +100,7 @@
       </form>
       <div class="horizontal" style="margin-top: 20px">
         <p style="margin-right: 5px">¿Ya tienes una cuenta?</p>
-        <a href="">Ingresar</a>
+        <a href="{{url_for('index')}}">Ingresar</a>
       </div>
     </div>
   </body>

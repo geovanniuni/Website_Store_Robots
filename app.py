@@ -84,7 +84,7 @@ def resumen_estadisticas():
 #     return render_template("mispedidos.html")
 
 @app.route("/registro")
-def formulario_agregar_alumno():
+def formulario_agregar_cliente():
     return render_template("registro.html")
 
 
