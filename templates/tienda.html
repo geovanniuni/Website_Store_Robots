@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="styles.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/styles.css')}}" media="screen" />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -26,14 +26,14 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
-    <title>Tienda</title>
+    <title>Tienda de SCARA</title>
   </head>
   <body>
     <div class="header">
       <div class="subheader">
-        <h1>Tienda &nbsp</h1>
-        <button class="btn btn-primary">
-          Estadísticas Públicas de la Tienda
+        <h1>Tienda de SCARA</h1>
+        <button>
+          <a href="{{url_for('index')}}" class="btn btn-primary">Estadísticas Públicas de la Tienda</a>
         </button>
       </div>
       <div class="subheader">
@@ -43,289 +43,58 @@
       </div>
     </div>
     <div class="grid-container">
-      <!-- poner for  -->
+      {% for productox in producto %}
       <div class="grid-item">
         <div class="card mb-3" style="max-width: 540px">
           <div class="row g-0">
             <div class="col-md-4 imagen-card">
-              <img src="robot1.jpg" class="img-fluid rounded-start" alt="..." />
+              <img src= "{{url_for('static', filename='images/robot1.jpg')}}" class="img-fluid rounded-start" alt="..." />
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">Robot de Limpieza</h5>
+                <h5 class="card-title">Robot {{productox[0]}}</h5>
                 <span class="card-text span-p">
                   Precio: &nbsp
-                  <p class="span-p-p">$1300</p>
+                  <p class="span-p-p">${{productox[1]}}</p>
                 </span>
                 <span class="card-text span-p">
                   Stock: &nbsp
-                  <p class="span-p-p">15 unidades</p>
+                  <p class="span-p-p">{{productox[2]}} unidades</p>
                 </span>
                 <span class="card-text span-p">
                   Proveedor: &nbsp
-                  <p class="span-p-p">ChinaWork</p>
+                  <p class="span-p-p">{{productox[3]}}</p>
                 </span>
                 <span class="card-text span-p">
                   Procedencia: &nbsp
-                  <p class="span-p-p">China</p>
+                  <p class="span-p-p">{{productox[4]}}</p>
                 </span>
                 <span class="card-text span-p">
                   ID: &nbsp
-                  <p class="span-p-p">AHC789UFI</p>
+                  <p class="span-p-p">{{productox[0]}}</p>
                 </span>
-                <button class="btn btn-primary">Agregar al carrito</button>
+
+                <form action="{{url_for('guardar_lineaPedido')}}" method="post">
+                  <label for="precio">cantidad</label>
+                  <input required type="number" class="input" placeholder="cantidad" name="cantidad" id="cantidad">
+                  <button type="submit" class="btn btn-primary">Agregar Carrito</button>
+                  <a href="{{url_for('index')}}" class="btn btn-primary">Volver</a>
+              </form>
+
+
+                <button>
+                  <a href="{{url_for('index')}}" class="btn btn-primary">Agregar Carrito</a>
+                </button>
+
+
+
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- terminar for  -->
-      <div class="grid-item">
-        <div class="card mb-3" style="max-width: 540px">
-          <div class="row g-0">
-            <div class="col-md-4 imagen-card">
-              <img src="robot2.jpg" class="img-fluid rounded-start" alt="..." />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Robot de Entretenimiento</h5>
-                <span class="card-text span-p">
-                  Precio: &nbsp
-                  <p class="span-p-p">$16000</p>
-                </span>
-                <span class="card-text span-p">
-                  Stock: &nbsp
-                  <p class="span-p-p">9 unidades</p>
-                </span>
-                <span class="card-text span-p">
-                  Proveedor: &nbsp
-                  <p class="span-p-p">USAEntertainment</p>
-                </span>
-                <span class="card-text span-p">
-                  Procedencia: &nbsp
-                  <p class="span-p-p">EEUU</p>
-                </span>
-                <span class="card-text span-p">
-                  ID: &nbsp
-                  <p class="span-p-p">JKF67RTE4</p>
-                </span>
-                <button class="btn btn-primary">Agregar al carrito</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="grid-item">
-        <div class="card mb-3" style="max-width: 540px">
-          <div class="row g-0">
-            <div class="col-md-4 imagen-card">
-              <img src="robot3.jpg" class="img-fluid rounded-start" alt="..." />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Robot de Cocina</h5>
-                <span class="card-text span-p">
-                  Precio: &nbsp
-                  <p class="span-p-p">$6000</p>
-                </span>
-                <span class="card-text span-p">
-                  Stock: &nbsp
-                  <p class="span-p-p">12 unidades</p>
-                </span>
-                <span class="card-text span-p">
-                  Proveedor: &nbsp
-                  <p class="span-p-p">AustraBots</p>
-                </span>
-                <span class="card-text span-p">
-                  Procedencia: &nbsp
-                  <p class="span-p-p">Australia</p>
-                </span>
-                <span class="card-text span-p">
-                  ID: &nbsp
-                  <p class="span-p-p">AUS876WR12</p>
-                </span>
-                <button class="btn btn-primary">Agregar al carrito</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="grid-item">
-        <div class="card mb-3" style="max-width: 540px">
-          <div class="row g-0">
-            <div class="col-md-4 imagen-card">
-              <img src="robot4.jpg" class="img-fluid rounded-start" alt="..." />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Robot de Seguridad</h5>
-                <span class="card-text span-p">
-                  Precio: &nbsp
-                  <p class="span-p-p">$1200</p>
-                </span>
-                <span class="card-text span-p">
-                  Stock: &nbsp
-                  <p class="span-p-p">21 unidades</p>
-                </span>
-                <span class="card-text span-p">
-                  Proveedor: &nbsp
-                  <p class="span-p-p">MexIndustries</p>
-                </span>
-                <span class="card-text span-p">
-                  Procedencia: &nbsp
-                  <p class="span-p-p">Mexico</p>
-                </span>
-                <span class="card-text span-p">
-                  ID: &nbsp
-                  <p class="span-p-p">MEX87HTY6</p>
-                </span>
-                <button class="btn btn-primary">Agregar al carrito</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="grid-item">
-        <div class="card mb-3" style="max-width: 540px">
-          <div class="row g-0">
-            <div class="col-md-4 imagen-card">
-              <img src="robot5.jpg" class="img-fluid rounded-start" alt="..." />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Robot Militares</h5>
-                <span class="card-text span-p">
-                  Precio: &nbsp
-                  <p class="span-p-p">$32000</p>
-                </span>
-                <span class="card-text span-p">
-                  Stock: &nbsp
-                  <p class="span-p-p">7 unidades</p>
-                </span>
-                <span class="card-text span-p">
-                  Proveedor: &nbsp
-                  <p class="span-p-p">EEUUArms</p>
-                </span>
-                <span class="card-text span-p">
-                  Procedencia: &nbsp
-                  <p class="span-p-p">EEUU</p>
-                </span>
-                <span class="card-text span-p">
-                  ID: &nbsp
-                  <p class="span-p-p">USA8954J</p>
-                </span>
-                <button class="btn btn-primary">Agregar al carrito</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="grid-item">
-        <div class="card mb-3" style="max-width: 540px">
-          <div class="row g-0">
-            <div class="col-md-4 imagen-card">
-              <img src="robot6.jpg" class="img-fluid rounded-start" alt="..." />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Robot Deportivos</h5>
-                <span class="card-text span-p">
-                  Precio: &nbsp
-                  <p class="span-p-p">$2300</p>
-                </span>
-                <span class="card-text span-p">
-                  Stock: &nbsp
-                  <p class="span-p-p">13 unidades</p>
-                </span>
-                <span class="card-text span-p">
-                  Proveedor: &nbsp
-                  <p class="span-p-p">FranceTech</p>
-                </span>
-                <span class="card-text span-p">
-                  Procedencia: &nbsp
-                  <p class="span-p-p">Francia</p>
-                </span>
-                <span class="card-text span-p">
-                  ID: &nbsp
-                  <p class="span-p-p">FR980IL</p>
-                </span>
-                <button class="btn btn-primary">Agregar al carrito</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="grid-item">
-        <div class="card mb-3" style="max-width: 540px">
-          <div class="row g-0">
-            <div class="col-md-4 imagen-card">
-              <img src="robot7.jpg" class="img-fluid rounded-start" alt="..." />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Robot Industriales</h5>
-                <span class="card-text span-p">
-                  Precio: &nbsp
-                  <p class="span-p-p">$26000</p>
-                </span>
-                <span class="card-text span-p">
-                  Stock: &nbsp
-                  <p class="span-p-p">5 unidades</p>
-                </span>
-                <span class="card-text span-p">
-                  Proveedor: &nbsp
-                  <p class="span-p-p">MechanicAleman</p>
-                </span>
-                <span class="card-text span-p">
-                  Procedencia: &nbsp
-                  <p class="span-p-p">Alemania</p>
-                </span>
-                <span class="card-text span-p">
-                  ID: &nbsp
-                  <p class="span-p-p">FR980IL</p>
-                </span>
-                <button class="btn btn-primary">Agregar al carrito</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="grid-item">
-        <div class="card mb-3" style="max-width: 540px">
-          <div class="row g-0">
-            <div class="col-md-4 imagen-card">
-              <img src="robot8.jpg" class="img-fluid rounded-start" alt="..." />
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Robot Explorador</h5>
-                <span class="card-text span-p">
-                  Precio: &nbsp
-                  <p class="span-p-p">$30000</p>
-                </span>
-                <span class="card-text span-p">
-                  Stock: &nbsp
-                  <p class="span-p-p">3 unidades</p>
-                </span>
-                <span class="card-text span-p">
-                  Proveedor: &nbsp
-                  <p class="span-p-p">JapanElectronic</p>
-                </span>
-                <span class="card-text span-p">
-                  Procedencia: &nbsp
-                  <p class="span-p-p">Japon</p>
-                </span>
-                <span class="card-text span-p">
-                  ID: &nbsp
-                  <p class="span-p-p">JP856IJ</p>
-                </span>
-                <button class="btn btn-primary">Agregar al carrito</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- borrar  -->
+      {% endfor %}
+
     </div>
   </body>
 </html>

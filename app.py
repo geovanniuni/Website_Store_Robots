@@ -4,6 +4,163 @@ from flask import Flask,render_template,request,redirect,flash
 from datetime import datetime
 
 
+class carritoCompra:
+    fechaCreacion = None
+    listaLineaProducto = None
+
+    def __init__(self, fcx, lx=[]):
+        self.__fechaCreacion = fcx
+        self.listaLineaProducto = lx
+
+    def getFecha(self):
+        return self.fechaCreacion
+
+    def getListaLineas(self):
+        return self.listaLineaProducto
+
+    def addLineaProducto(self, newLine):
+        self.listaLineaProducto.append(newLine)
+
+    def getTotalCarrito(self):
+        total = 0
+        for i in range(len(self.listaLineaProducto)):
+            total += self.listaLineaProducto[i].getPrecioLinea()
+        return total
+
+    def printCarrito(self):
+        for i in range(len(self.listaLineaProducto)):
+            self.listaLineaProducto[i].printLinea()
+
+
+class lineaProducto:
+    cantidad = None
+    precioLinea = None
+    productox = None
+
+    def __init__(self, cantx, prox):
+        self.cantidad = cantx
+        self.productox = prox
+        self.precioLinea = prox.getPrecioProducto() * cantx
+
+    def getCantidad(self):
+        return self.cantidad
+
+    def getPrecioLinea(self):
+        return self.precioLinea
+
+    def getProductox(self):
+        return self.productox
+
+    def printLinea(self):
+        print(self.productox.getDenominacion() + " " + str(self.cantidad), end=' ')
+        print("$" + str(self.productox.getPrecioProducto()), end=' ')
+        print("$" + str(self.precioLinea))
+
+
+class producto:
+    idProducto = None
+    denominacion = None
+    proveedor = None
+    precioProducto = None
+
+    def __init__(self, idx, denox, provx, preciox):
+        self.idProducto = idx
+        self.denominacion = denox
+        self.proveedor = provx
+        self.precioProducto = preciox
+
+    def getIdProducto(self):
+        return self.idProducto
+
+    def getDenominacion(self):
+        return self.denominacion
+
+    def getProveedor(self):
+        return self.proveedor
+
+    def getPrecioProducto(self):
+        return self.precioProducto
+
+
+class pedido:
+    idPedido = None
+    fechaRealizacion = None
+    estado = None
+    total = None
+    carritox = None
+
+    def __init__(self, idx, frx, fcx, lx):
+        self.idPedido = idx
+        self.fechaRealizacion = frx
+        self.estado = "Proceso"
+        self.carritox = carritoCompra(fcx, lx)
+
+    def getIdPedido(self):
+        return self.idPedido
+
+    def getFechaRealizacion(self):
+        return self.fechaRealizacion
+
+    def getEstado(self):
+        return self.estado
+
+    def getCarritox(self):
+        return self.carritox
+
+    def finalizarPedido(self):
+        self.estado = "Finalizado"
+
+    def printPedido(self):
+        print(self.idPedido, end=" ")
+        print(self.estado, end=" ")
+        print(self.fechaRealizacion)
+        self.carritox.printCarrito()
+        print("Total Pedido $" + str(self.carritox.getTotalCarrito()))
+        print("\n")
+
+
+class cliente:
+    idCliente = None
+    direccion = None
+    telefono = None
+    email = None
+    listaPedidos = None
+
+    def __init__(self, idx, dirx, telx, emailx):
+        self.__idCliente = idx
+        self.__direccion = dirx
+        self.__telefono = telx
+        self.__emailx = emailx
+        self.listaPedidos = []
+
+    def getIdCliente(self):
+        return self.idCliente
+
+    def getDireccion(self):
+        return self.direccion
+
+    def getTelefono(self):
+        return self.telefono
+
+    def getEmail(self):
+        return self.email
+
+    def getPedidos(self):
+        return self.listaPedidos
+
+    def setPedidox(self, pedido):
+        self.listaPedidos.append(pedido)
+
+    def finalizarPedidox(self, idPedidox):
+        for i in range(len(self.listaPedidos)):
+            if (idPedidox == self.listaPedidos[i].getIdPedido()):
+                self.listaPedidos[i].finalizarPedido()
+
+    def testPedidos(self):
+        for i in range(len(self.listaPedidos)):
+            self.listaPedidos[i].printPedido()
+
+
 connection=pymysql.connect(
             host="18.222.42.25", # si es remota coloca IP // 192.168.200.50
             user='grupo',
@@ -12,7 +169,7 @@ connection=pymysql.connect(
 
 cursor=connection.cursor()
 
-sql='SELECT * FROM Producto'
+sql='SELECT * FROM producto_'
 try:
     cursor.execute(sql)
     data=cursor.fetchall() # mas de uno
@@ -20,7 +177,7 @@ try:
 except Exception as e:
     raise
 
-sql='SELECT * FROM cliente'
+sql='SELECT * FROM cliente_'
 try:
     cursor.execute(sql)
     data=cursor.fetchall() # mas de uno
@@ -32,7 +189,7 @@ def obtener_productos():
     #alumnosx = []
     with connection.cursor() as cursor:
         try:
-            cursor.execute("SELECT * FROM Producto")
+            cursor.execute("SELECT * FROM producto_")
             productox = cursor.fetchall()
             return productox
         except Exception as e:
@@ -44,7 +201,7 @@ def obtener_clientes():
     #alumnosx = []
     with connection.cursor() as cursor:
         try:
-            cursor.execute("SELECT * FROM cliente")
+            cursor.execute("SELECT * FROM cliente_")
             clientex = cursor.fetchall()
             return clientex
         except Exception as e:
@@ -58,8 +215,24 @@ def insertar_cliente(idcliente,nombre_completo, correo, contrasenia,direccion,te
             connection.commit()
         except Exception as e:
             raise
-    
-print(obtener_productos())
+
+
+def lista_clientes():
+    clientex= obtener_clientes()
+    listaDeClientes=[]
+    for i in clientex:
+        cli=cliente(i[0],i[1],i[2], i[3])
+        listaDeClientes.append(cli)
+    return listaDeClientes
+
+
+def lista_productos():
+    productox= obtener_productos()
+    listaDeProductos=[]
+    for i in productox:
+        prod=producto(i[0],i[1],i[2],i[3],i[4])
+        listaDeProductos.append(prod)
+    return listaDeProductos
 
 
 app = Flask(__name__)
@@ -72,7 +245,8 @@ def index():
 
 @app.route("/tienda")
 def formulario_agregar_producto():
-    return render_template("tienda.html")
+    producto = obtener_productos()
+    return render_template("tienda.html",producto=producto)
 
 @app.route("/estadisticas")
 def resumen_estadisticas():
@@ -108,7 +282,23 @@ def guardar_cliente():
     # De cualquier modo, y si todo fue bien, redireccionar
     return redirect("/registro")
 
+@app.route("/guardar_lineaPedido", methods=["POST"])
+def guardar_lineaPedido(clientex,productox):
+    cantidad = request.form["cantidad"] #Recibe cantidad del producto
+    idpedido = request.form["idpedido"]
+    nuevaLinea= lineaProducto(cantidad,productox)
+    existe=False
+    for i in clientex.getPedidos():
+        if(i.getIdPedido==idpedido):
+            existe=True
+            i.getCarritox().addLineaProducto(nuevaLinea)
+    if not existe:
+        nuevoPedido= pedido(idpedido,"No disponible","No disponible")
+        nuevoPedido.getCarritox().addLineaProducto(nuevaLinea)
+        clientex.setPedidos(nuevoPedido)
 
+    # De cualquier modo, y si todo fue bien, redireccionar
+    return redirect("/tienda")
 
 
 
