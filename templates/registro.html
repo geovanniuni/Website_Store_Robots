@@ -32,67 +32,72 @@
     <div class="container2">
       <h1 class="title">ROBO-Shop</h1>
       <h3 class="subtitle">Registro</h3>
-      <form class="form-login">
+      <form action="{{url_for('guardar_cliente')}}" method="post">
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label"
-            >Nombre Completo</label
-          >
+          <label for="nombre_completo">Nombre Completo</label>
           <input
             type="text"
-            class="form-control"
-            id="exampleInputEmail1"
+            class="input"
+            placeholder="nombre_completo"
+            name="nombre_completo"
+            id="nombre_completo"
             aria-describedby="emailHelp"
           />
         </div>
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label"
-            >User ID (5 carateres)</label
-          >
+          <label for="idcliente">User ID (5 carateres)</label>
           <input
+            type="number"
             maxlength="5"
-            type="text"
-            class="form-control"
-            id="exampleInputEmail1"
+            class="input"
+            placeholder="idcliente"
+            name="idcliente"
+            id="idcliente"
             aria-describedby="emailHelp"
           />
         </div>
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label"
-            >Correo Electrónico</label
-          >
+          <label for="correo">Correo Electrónico</label>
           <input
-            type="email"
-            class="form-control"
-            id="exampleInputEmail1"
+            type="text"
+            class="input"
+            placeholder="correo"
+            name="correo"
+            id="correo"
             aria-describedby="emailHelp"
           />
         </div>
         <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label"
-            >Contraseña</label
-          >
-          <input
-            type="password"
-            class="form-control"
-            id="exampleInputPassword1"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Dirección</label>
+          <label for="contrasenia">Contraseña</label>
           <input
             type="text"
-            class="form-control"
-            id="exampleInputEmail1"
+            class="input"
+            placeholder="contrasenia"
+            name="contrasenia"
+            id="contrasenia"
             aria-describedby="emailHelp"
-            placeholder="Pais, Ciudad, Local..."
           />
         </div>
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Teléfono</label>
+          <label for="direccion">Dirección</label>
           <input
             type="text"
-            class="form-control"
-            id="exampleInputEmail1"
+            class="input"
+            placeholder="direccion"
+            name="direccion"
+            id="direccion"
+            aria-describedby="emailHelp"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="telefono">Teléfono</label>
+          <input
+            type="number"
+            maxlength="5"
+            class="input"
+            placeholder="telefono"
+            name="telefono"
+            id="telefono"
             aria-describedby="emailHelp"
           />
         </div>

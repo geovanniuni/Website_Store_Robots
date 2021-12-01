@@ -51,10 +51,10 @@ def obtener_clientes():
             raise
     #return alumnosx
 
-def insertar_cliente(idcliente, direccion, telefono,email,nombres,apellidoP, apellidoM):
+def insertar_cliente(idcliente,nombre_completo, correo, contrasenia,direccion,telefono):
     with connection.cursor() as cursor:
         try:
-            cursor.execute("INSERT INTO cliente(idcliente, direccion, telefono,email,nombres,apellidoP, apellidoM) VALUES (%s, %s, %s, %s, %s, %s, %s)",(idcliente, direccion, telefono,email,nombres,apellidoP, apellidoM))
+            cursor.execute("INSERT INTO cliente_(idcliente_,nombre_completo, correo, contrasena,direccion,telefono) VALUES (%s, %s, %s, %s, %s, %s)",(idcliente,nombre_completo, correo, contrasenia,direccion,telefono))
             connection.commit()
         except Exception as e:
             raise
@@ -96,14 +96,17 @@ def formulario_agregar_cliente():
 #     return render_template("alumnos.html", alumno=alumno)
 
 
-# @app.route("/guardar_alumno", methods=["POST"])
-# def guardar_alumno():
-#     nombre = request.form["nombre"]
-#     nota = request.form["nota"]
-#     edad = request.form["edad"]
-#     insertar_alumno(nombre, nota, edad)
-#     # De cualquier modo, y si todo fue bien, redireccionar
-#     return redirect("/alumnos")
+@app.route("/guardar_cliente", methods=["POST"])
+def guardar_cliente():
+    idcliente = request.form["idcliente"]
+    nombre_completo = request.form["nombre_completo"]
+    correo = request.form["correo"]
+    contrasenia = request.form["contrasenia"]
+    direccion = request.form["direccion"]
+    telefono = request.form["telefono"]
+    insertar_cliente(idcliente, nombre_completo, correo, contrasenia, direccion, telefono)
+    # De cualquier modo, y si todo fue bien, redireccionar
+    return redirect("/registro")
 
 
 
