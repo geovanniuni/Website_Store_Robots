@@ -1,0 +1,71 @@
+.content-login {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+}
+.container2 {
+  border: solid rgb(212, 212, 212) 2px;
+  border-radius: 20px;
+  background-color: rgb(255, 255, 255, 0.9);
+  width: 500px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.form-login {
+  margin-top: 50px;
+  width: 400px;
+}
+.horizontal {
+  display: flex;
+}
+.grid-container {
+  width: 100%;
+  display: grid;
+  justify-content: space-around;
+  align-content: space-around;
+  grid-template-columns: auto auto;
+  grid-row-gap: 50px;
+}
+.span-p {
+  display: flex;
+  margin: 0%;
+}
+.span-p-p {
+  margin: 0%;
+  font-weight: bold;
+}
+.imagen-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+.subheader {
+  display: flex;
+  align-items: center;
+}
+.img-fluid {
+  width: 400px;
+}
+.container-carrito {
+  display: flex;
+}
+.compra {
+  width: 600px;
+}
+.final {
+  margin-top: 10px;
+}
