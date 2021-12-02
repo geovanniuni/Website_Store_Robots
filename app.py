@@ -287,7 +287,9 @@ def resumen_estadisticas():
 @app.route("/registro")
 def formulario_agregar_cliente():
     return render_template("registro.html")
-
+@app.route("/carrito")
+def vercarrito():
+    return render_template("carrito.html")
 
 # #@app.route("/")
 # @app.route("/estadisticas")
