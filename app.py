@@ -58,30 +58,31 @@ class lineaProducto:
 
 
 class producto:
-    idProducto = None
-    denominacion = None
-    proveedor = None
-    precioProducto = None
-
-    def __init__(self, idx, denox, provx, preciox):
-        self.idProducto = idx
-        self.denominacion = denox
-        self.proveedor = provx
-        self.precioProducto = preciox
-
+    idProducto=None
+    precioProducto=None
+    stock=None
+    proveedor=None
+    procedencia=None
+    def __init__(self,idx,preciox,stockx,provx,procx):
+        self.idProducto=idx
+        self.precioProducto=preciox
+        self.stock=stockx
+        self.proveedor= provx
+        self.procedencia=procx
+       
     def getIdProducto(self):
         return self.idProducto
-
-    def getDenominacion(self):
-        return self.denominacion
-
+    def getProcedencia(self):
+        return self.procedencia
     def getProveedor(self):
         return self.proveedor
-
     def getPrecioProducto(self):
         return self.precioProducto
+    def getStock(self):
+        return self.stock
 
 
+        
 class pedido:
     idPedido = None
     fechaRealizacion = None
@@ -173,7 +174,7 @@ sql='SELECT * FROM producto_'
 try:
     cursor.execute(sql)
     data=cursor.fetchall() # mas de uno
-    print(data)
+   #print(data)
 except Exception as e:
     raise
 
@@ -181,7 +182,7 @@ sql='SELECT * FROM cliente_'
 try:
     cursor.execute(sql)
     data=cursor.fetchall() # mas de uno
-    print(data)
+    #print(data)
 except Exception as e:
     raise
 
@@ -234,6 +235,24 @@ def lista_productos():
         listaDeProductos.append(prod)
     return listaDeProductos
 
+def buscar_producto(idProducto):
+    lista=lista_productos()
+    for i in lista:
+        if(i.getIdProducto()==idProducto):
+            return i
+    
+    return None
+
+
+def buscar_cliente(idCliente):
+    lista=lista_clientes()
+    for i in lista:
+        if(i.getIdCliente()==idCliente):
+            return i
+    return None
+    
+
+
 
 app = Flask(__name__)
 
@@ -243,10 +262,11 @@ def index():
    #return "Hello World"
    return render_template("index.html")
 
-@app.route("/tienda")
-def formulario_agregar_producto():
-    producto = obtener_productos()
-    return render_template("tienda.html",producto=producto)
+@app.route('/tienda/<idcliente>')
+def formulario_agregar_producto(idcliente):
+    producto = lista_productos()
+    imagen=obtener_productos()
+    return render_template("tienda.html",producto=producto,cliente=idcliente)
 
 @app.route("/estadisticas")
 def resumen_estadisticas():
@@ -283,9 +303,14 @@ def guardar_cliente():
     return redirect("/registro")
 
 @app.route("/guardar_lineaPedido", methods=["POST"])
-def guardar_lineaPedido(clientex,productox):
+def guardar_lineaPedido(idpedido="0001"):
+    #clientex=request.
+    
     cantidad = request.form["cantidad"] #Recibe cantidad del producto
-    idpedido = request.form["idpedido"]
+    id= request.form["id"]
+    idclient=request.form["idCliente"]
+    productox=buscar_producto(id)
+    clientex=buscar_cliente(idclient)
     nuevaLinea= lineaProducto(cantidad,productox)
     existe=False
     for i in clientex.getPedidos():
@@ -301,7 +326,31 @@ def guardar_lineaPedido(clientex,productox):
     return redirect("/tienda")
 
 
+@app.route('/login', methods=["POST"])
+def login():
+    if request.method == 'POST': 
+        correo = request.form['correo']
+        contrasena = request.form['contrasena']
 
+        cur = connection.cursor() 
+        cur.execute("SELECT * FROM cliente_ WHERE correo=%s", (correo,))
+        cliente = cur.fetchone()
+        cur.close()
+
+        if (cliente != None): 
+            print(cliente)
+            if contrasena == cliente[3]:
+                path='/tienda/'+cliente[0]
+                print("La direccion es"+ path)
+                return redirect(path)
+
+            else: 
+                return render_template("index.html")
+    
+        else: 
+            return render_template("index.html")
+    else: 
+        return render_template("index.html")
 
 
 

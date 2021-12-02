@@ -33,32 +33,37 @@
       <div class="container2">
         <h1 class="title">ROBO-Shop</h1>
         <h3 class="subtitle">Ingreso</h3>
-        <form class="form-login">
+        <form class="form-login" action="/login" method="POST">
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label"
+            <label for="correo" class="form-label"
               >Correo Electrónico</label
             >
             <input
               type="email"
-              class="form-control"
-              id="exampleInputEmail1"
+              class="input"
+              name="correo"
+              id="correo"
               aria-describedby="emailHelp"
             />
           </div>
           <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label"
+            <label for="contrasenia" class="form-label"
               >Contraseña</label
             >
             <input
               type="password"
-              class="form-control"
-              id="exampleInputPassword1"
+              class="input"
+              name="contrasena"
+              id="contrasena"
             />
           </div>
+          <!--    agregue el boton normal  -->
+          <button type="submit" class="btn btn-primary">Ingresar</button>
+          
 
-          <button>
+          <!-- <button>
             <a href="{{url_for('formulario_agregar_producto')}}" class="btn btn-primary">Ingresar</a>
-          </button>
+          </button> -->
         </form>
         <div class="horizontal" style="margin-top: 20px">
           <p style="margin-right: 5px">¿No tienes una cuenta?</p>

@@ -31,7 +31,7 @@
   <body>
     <div class="header">
       <div class="subheader">
-        <h1>Tienda de SCARA</h1>
+        <h1>Tienda de de Robots</h1>
         <button>
           <a href="{{url_for('index')}}" class="btn btn-primary">Estadísticas Públicas de la Tienda</a>
         </button>
@@ -49,43 +49,40 @@
           <div class="row g-0">
             <div class="col-md-4 imagen-card">
               <img src= "{{url_for('static', filename='images/robot1.jpg')}}" class="img-fluid rounded-start" alt="..." />
+              
             </div>
             <div class="col-md-8">
               <div class="card-body">
-                <h5 class="card-title">Robot {{productox[0]}}</h5>
+                <h5 class="card-title">Robot {{productox.getIdProducto()}}</h5>
                 <span class="card-text span-p">
                   Precio: &nbsp
-                  <p class="span-p-p">${{productox[1]}}</p>
+                  <p class="span-p-p">${{productox.getPrecioProducto()}}</p>
                 </span>
                 <span class="card-text span-p">
                   Stock: &nbsp
-                  <p class="span-p-p">{{productox[2]}} unidades</p>
+                  <p class="span-p-p">{{productox.getStock()}} unidades</p>
                 </span>
                 <span class="card-text span-p">
                   Proveedor: &nbsp
-                  <p class="span-p-p">{{productox[3]}}</p>
+                  <p class="span-p-p">{{productox.getProveedor()}}</p>
                 </span>
                 <span class="card-text span-p">
                   Procedencia: &nbsp
-                  <p class="span-p-p">{{productox[4]}}</p>
+                  <p class="span-p-p">{{productox.getProcedencia()}}</p>
                 </span>
                 <span class="card-text span-p">
                   ID: &nbsp
-                  <p class="span-p-p">{{productox[0]}}</p>
+                  <p class="span-p-p">{{productox.getIdProducto()}}</p>
                 </span>
 
                 <form action="{{url_for('guardar_lineaPedido')}}" method="post">
                   <label for="precio">cantidad</label>
                   <input required type="number" class="input" placeholder="cantidad" name="cantidad" id="cantidad">
+                  <input type="hidden" class="input" placeholder="id" name="id" id="id" value= "{{productox.getIdProducto()}}">
+                  <input type="hidden" class="input" placeholder="idCliente" name="idCliente" id="idCliente" value="{{cliente}}">
                   <button type="submit" class="btn btn-primary">Agregar Carrito</button>
                   <a href="{{url_for('index')}}" class="btn btn-primary">Volver</a>
               </form>
-
-
-                <button>
-                  <a href="{{url_for('index')}}" class="btn btn-primary">Agregar Carrito</a>
-                </button>
-
 
 
               </div>
