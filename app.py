@@ -90,7 +90,7 @@ class pedido:
     total = None
     carritox = None
 
-    def __init__(self, idx, frx, fcx, lx):
+    def __init__(self, idx, frx, fcx, lx=[]):
         self.idPedido = idx
         self.fechaRealizacion = frx
         self.estado = "Proceso"
@@ -125,14 +125,14 @@ class cliente:
     direccion = None
     telefono = None
     email = None
-    listaPedidos = None
+    listaPedidos = list()
 
     def __init__(self, idx, dirx, telx, emailx):
         self.__idCliente = idx
         self.__direccion = dirx
         self.__telefono = telx
         self.__emailx = emailx
-        self.listaPedidos = []
+       # self.listaPedidos = []
 
     def getIdCliente(self):
         return self.idCliente
@@ -217,6 +217,14 @@ def insertar_cliente(idcliente,nombre_completo, correo, contrasenia,direccion,te
         except Exception as e:
             raise
 
+def insertar_pedido(idcliente,idproducto, cantidad ):
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute("INSERT INTO mispedidos(idproducto,idcliente, cantidad) VALUES (%s, %s, %s)",(idproducto,idcliente, cantidad))
+            connection.commit()
+        except Exception as e:
+            raise
+
 
 def lista_clientes():
     clientex= obtener_clientes()
@@ -241,7 +249,6 @@ def buscar_producto(idProducto):
         if(i.getIdProducto()==idProducto):
             return i
     
-    return None
 
 
 def buscar_cliente(idCliente):
@@ -249,7 +256,7 @@ def buscar_cliente(idCliente):
     for i in lista:
         if(i.getIdCliente()==idCliente):
             return i
-    return None
+ 
     
 
 
@@ -312,18 +319,14 @@ def guardar_lineaPedido(idpedido="0001"):
     productox=buscar_producto(id)
     clientex=buscar_cliente(idclient)
     nuevaLinea= lineaProducto(cantidad,productox)
-    existe=False
-    for i in clientex.getPedidos():
-        if(i.getIdPedido==idpedido):
-            existe=True
-            i.getCarritox().addLineaProducto(nuevaLinea)
-    if not existe:
-        nuevoPedido= pedido(idpedido,"No disponible","No disponible")
-        nuevoPedido.getCarritox().addLineaProducto(nuevaLinea)
-        clientex.setPedidos(nuevoPedido)
+    nuevoPedido= pedido(idpedido,"No disponible","No disponible")
+    nuevoPedido.getCarritox().addLineaProducto(nuevaLinea)
+    insertar_pedido(idclient,id,cantidad)
+    #clientex.setPedidos(nuevoPedido)
+        
 
     # De cualquier modo, y si todo fue bien, redireccionar
-    return redirect("/tienda")
+    return redirect('/tienda/' + idclient)
 
 
 @app.route('/login', methods=["POST"])
@@ -340,9 +343,9 @@ def login():
         if (cliente != None): 
             print(cliente)
             if contrasena == cliente[3]:
-                path='/tienda/'+cliente[0]
-                print("La direccion es"+ path)
-                return redirect(path)
+              
+                print('/tienda')
+                return redirect('/tienda/' + str(cliente[0]))
 
             else: 
                 return render_template("index.html")
